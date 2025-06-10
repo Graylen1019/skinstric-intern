@@ -16,7 +16,7 @@ export const Navbar = () => {
           <img src="/right-bracket.png" alt="right bracket" />
         </div>
       </div>
-      <button className="scale-75 flex items-center justify-center gap-2 font-semibold pointer-events-none h-9 px-4 py-2 mx-4 text-white text-[10px] bg-black ">ENTER CODE</button>
+      <button className=" font-roobert scale-75 flex items-center justify-center gap-2 font-semibold pointer-events-none h-9 px-4 py-2 mx-4 text-white text-[10px] bg-black ">ENTER CODE</button>
     </div>
   );
 };
