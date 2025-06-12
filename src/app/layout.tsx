@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import AOSProvider from "../modules/AOSProvider";
 import "./globals.css";
 
 const roobert = localFont({
@@ -35,8 +36,6 @@ const roobert = localFont({
       style: "normal",
     },
   ],
-  variable: "--font-roobert",
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -51,7 +50,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roobert.variable} antialiased`}>{children}</body>
+      <body className={`${roobert.className} antialiased`}>
+        <AOSProvider>{children}</AOSProvider>
+      </body>
     </html>
   );
 }
