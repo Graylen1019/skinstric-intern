@@ -7,7 +7,7 @@ export const LeftRectangle = ({ onHoverChange, faded }: LeftRectangleProps) => {
   return (
     <div
       id="left"
-      className={`fixed left-[-308px] w-[500px] h-[500px] top-1/2 -translate-y-1/2 z-10 transition-opacity duration-500 ease-in-out ${
+      className={`fixed left-[-301px] w-[500px] h-[500px] top-1/2 -translate-y-1/2 z-10 transition-opacity duration-500 ease-in-out hidden lg:block ${
         faded ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >

@@ -14,7 +14,7 @@ export const RightRectangle = ({
   return (
     <div
       id="right"
-      className={`fixed right-[-308px] w-[500px] h-[500px] top-1/2 -translate-y-1/2 z-10 transition-opacity duration-500 ease-in-out ${
+      className={`fixed right-[-301px] w-[500px] h-[500px] top-1/2 -translate-y-1/2 z-10 transition-opacity duration-500 ease-in-out hidden lg:block ${
         faded ? "opacity-0" : "opacity-100"
       }`}
     >

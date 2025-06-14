@@ -230,7 +230,7 @@ const Page = () => {
 
           <AnimatePresence>
             {currentStage === "completed" && (
-              <Link href={"/results"} className="inset-0" key="proceed-link">
+              <Link href={"/result"} className="inset-0" key="proceed-link">
                 <motion.div
                   initial={{ opacity: 0, x: -160 }} // Start 40px to the left
                   animate={{ opacity: 1, x: 0 }} // Move to center
