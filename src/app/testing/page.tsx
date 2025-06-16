@@ -98,6 +98,9 @@ const Page = () => {
         console.log("FULL API Response:" , responseData);
         console.log("Success:", responseData.message)
 
+        localStorage.setItem("userName", name.trim());
+        localStorage.setItem("userLocation", location.trim());
+
         setCurrentStage("completed");
         setLoading(false);
 

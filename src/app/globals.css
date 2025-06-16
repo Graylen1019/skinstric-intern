@@ -32,6 +32,16 @@ body {
   }
 }
 
+.animate-spin-load {
+  animation: spin-slow 5s linear infinite;
+}
+.animate-spin-load-slow {
+  animation: spin-slow 10s linear infinite;
+}
+.animate-spin-load-slower {
+  animation: spin-slow 15s linear infinite;
+}
+
 .animate-spin-slow {
   animation: spin-slow 50s linear infinite;
 }
