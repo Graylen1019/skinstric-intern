@@ -4,9 +4,10 @@ import { useState } from "react";
 import { Navbar } from "@/modules/navbar";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 
 interface ApiResponse {
-  successMessage?: string
+  successMessage?: string;
   message?: string;
   name?: string;
   location?: string;
@@ -94,9 +95,9 @@ const Page = () => {
             `HTTP error! Status: ${response.status}. ${errorMessage}`
           );
         }
-        
-        console.log("FULL API Response:" , responseData);
-        console.log("Success:", responseData.message)
+
+        console.log("FULL API Response:", responseData);
+        console.log("Success:", responseData.message);
 
         localStorage.setItem("userName", name.trim());
         localStorage.setItem("userLocation", location.trim());
@@ -160,9 +161,10 @@ const Page = () => {
 
             {currentStage === "nameInput" && (
               <div>
+                <div className="flex-flex-col items-center" />
                 <input
                   autoFocus
-                  className="text-6xl font-normal text-center bg-transparent border-b border-black focus:outline-none appearance-none w-[432px] pt-1 tracking-[-0.07em] leading-[64px] z-20 text-black"
+                  className="text-5xl sm:text-6xl font-normal text-center bg-transparent border-b border-black focus:outline-none appearance-none w-[372px] sm:w-[432px] pt-1 tracking-[-0.07em] leading-[64px] z-20 text-black"
                   type="text"
                   placeholder="Introduce Yourself"
                   value={name}
@@ -174,9 +176,10 @@ const Page = () => {
 
             {currentStage === "locationInput" && (
               <div>
+                <div className="flex-flex-col items-center" />
                 <input
                   autoFocus
-                  className="text-6xl font-normal text-center bg-transparent border-b border-black focus:outline-none appearance-none w-[432px] pt-1 tracking-[-0.07em] leading-[48px] z-20 text-black"
+                  className="text-5xl sm:text-6xl font-normal text-center bg-transparent border-b border-black focus:outline-none appearance-none w-[372px] sm:w-[432px] pt-1 tracking-[-0.07em] leading-[48px] z-20 text-black"
                   type="text"
                   placeholder="your city name"
                   value={location}
@@ -187,43 +190,48 @@ const Page = () => {
             )}
           </form>
 
-          <img
+          <Image
             id="small"
             loading="lazy"
             width="602"
             height="602"
             alt="small-square"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 animate-spin-slowest"
+            className="w-[320px] h-[320px] md:w-[602px] md:h-[602px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 animate-spin-slowest "
             src={"/Rectangle%202778.png"}
           />
-          <img
+          <Image
             id="medium"
             alt="medium-square"
             loading="lazy"
             width="682"
             height="682"
             src={"/Rectangle%202779.png"}
-            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[682px] md:h-[682px] rotate-185 animate-spin-slower z-10"
+            className="w-[400px] h-[400px] md:w-[682px] md:h-[682px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rotate-185 animate-spin-slower z-10"
           />
-          <img
+          <Image
             src={"/Rectangle%202780.png"}
             alt="large-square"
             width="762"
             height="762"
             loading="lazy"
             id="large"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] md:w-[762px] md:h-[762px] rotate-190 z-10 animate-spin-slow"
+            className="w-[480px] h-[480px] md:w-[762px] md:h-[762px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-190 z-10 animate-spin-slow"
           />
         </div>
 
-        <div className="absolute bottom-9 w-full flex justify-between px-13">
+        <div className="absolute bottom-38.5 md:bottom-9 w-full flex justify-between md:px-9 px-13">
           <Link href={"/"} className="inset-0">
             <div>
+              <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
+                <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
+                  BACK
+                </span>
+              </div>
               <div className="group hidden sm:flex flex-row relative justify-center items-center">
-                <div className="w-12 h-12 flex justify-center border border-solid rotate-45 scale-[0.85] group-hover:scale-[1] duration-300 ease-in-out"></div>
-                <div className="absolute left-[15px] bottom-[13px] scale-[1] duration-300 group-hover:scale-[1.15] ease">
+                <div className="w-12 h-12 hidden sm:flex justify-center border border-solid rotate-45 scale-[0.85] gorup-hover:scale-[0.95] ease duration-300" />
+                <span className="absolute left-[15px] bottom-[13px] scale-[0.9] hidden sm:block group-hover:scale-[0.95] ease duration-300">
                   ◀
-                </div>
+                </span>
                 <span className="text-sm font-semibold hidden sm:block ml-6">
                   BACK
                 </span>
@@ -238,14 +246,21 @@ const Page = () => {
                   initial={{ opacity: 0, x: -160 }} // Start 40px to the left
                   animate={{ opacity: 1, x: 0 }} // Move to center
                   transition={{ duration: 1, ease: "easeOut" }}
-                  className="group hidden sm:flex flex-row relative justify-center items-center"
+                  className=""
                 >
-                  <span className="text-sm font-semibold hidden sm:block mr-6">
-                    PROCEED
-                  </span>
-                  <div className="w-12 h-12 flex justify-center border border-solid rotate-45 scale-[0.85] group-hover:scale-[1] duration-300 ease-in-out"></div>
-                  <div className="absolute right-[15px] bottom-[13px] scale-[1] duration-300 group-hover:scale-[1.15] ease">
-                    ▶
+                  <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
+                    <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
+                     PROCEED
+                    </span>
+                  </div>
+                  <div className="group hidden sm:flex flex-row relative justify-center items-center">
+                    <div className="w-12 h-12 hidden sm:flex justify-center border border-solid rotate-45 scale-[0.85] gorup-hover:scale-[0.95] ease duration-300" />
+                    <span className="absolute left-[15px] bottom-[13px] scale-[0.9] hidden sm:block group-hover:scale-[0.95] ease duration-300 rotate-180">
+                      ◀
+                    </span>
+                    <span className="text-xl font-semibold hidden sm:block ml-6">
+                      PROCEED
+                    </span>
                   </div>
                 </motion.div>
               </Link>

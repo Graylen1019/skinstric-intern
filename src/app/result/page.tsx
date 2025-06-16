@@ -138,7 +138,7 @@ const Page = () => {
                 alt="camera-icon"
                 className="absolute w-[100px] h-[100px] md:w-[136px] md:h-[136px] hover:scale-110 duration-500 ease-in-out cursor-pointer"
               />
-              <div className="absolute bottom-[1%] right-[90%] md:top-[30.9%] md:right-[-12px] translate-y-[-20px]">
+              <div className="absolute bottom-[1%] right-[90px] md:top-[30.9%] md:right-[-12px] translate-y-[-20px]">
                 <p className="text-xs md:text-sm font-normal mt-1 leading-[24px]">
                   ALLOW A.I.
                   <br />
@@ -223,14 +223,20 @@ const Page = () => {
           </div>
 
           {isProcessingImage && (
-            <>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
               <div
-                className="w-full relative md:absolute md:left-1/2 md:-translate-y-[0%] -translate-y-[1%] md:-translate-x-1/2 flex items-center justify-center "
+                className="md:hidden absolute w-[calc(100%-40px)] h-[484px] bg-white rounded-lg top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                aria-hidden="true"
+              />
+
+              <div
+                className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden" // `overflow-hidden` is crucial for cropping
                 id="upload"
               >
-                <div className="w-full h-[484px] bg-white" />
-                <div className="flex flex-col items-center justify-center w-full relative md:absolute md:left-1/2 md:-translate-y-[0%] -translate-y-[1%] md:-translate-x-1/2 gap-y-8 ">
-                  <p className="font-semibold">PREPARING YOUR ANALYSIS...</p>
+                <div className="absolute z-10 flex flex-col items-center justify-center gap-y-8">
+                  <p className="font-semibold text-[#1A1B1C]">
+                    PREPARING YOUR ANALYSIS...
+                  </p>
                   <div className="flex space-x-4">
                     <div
                       className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
@@ -246,6 +252,7 @@ const Page = () => {
                     />
                   </div>
                 </div>
+
                 <Image
                   src="/Rectangle%202780.png"
                   alt="large-square"
@@ -253,7 +260,7 @@ const Page = () => {
                   height={484}
                   loading="lazy"
                   id="large"
-                  className="absolute h-[270px] w-[270px] md:w-[482px] md:h-[482px] rotate-205 animate-spin-load filter brightness-0"
+                  className="hidden md:block absolute h-[270px] w-[270px] md:w-[482px] md:h-[482px] rotate-205 animate-spin-load filter brightness-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 />
                 <Image
                   id="medium"
@@ -262,7 +269,7 @@ const Page = () => {
                   width={448}
                   height={448}
                   src="/Rectangle%202779.png"
-                  className="absolute w-[230px] h-[230px] md:w-[444.34px] md:h-[444.34px] rotate-195 animate-spin-load-slow filter brightness-0"
+                  className="hidden md:block absolute w-[230px] h-[230px] md:w-[444.34px] md:h-[444.34px] rotate-195 animate-spin-load-slow filter brightness-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 />
                 <Image
                   id="small"
@@ -270,11 +277,11 @@ const Page = () => {
                   width={408}
                   height={408}
                   alt="small-square"
-                  className="absolute w-[190px] h-[190px] md:w-[405.18px] md:h-[405.18px] animate-spin-load-slower filter brightness-0"
+                  className="hidden md:block absolute w-[190px] h-[190px] md:w-[405.18px] md:h-[405.18px] animate-spin-load-slower filter brightness-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                   src="/Rectangle%202778.png"
                 />
               </div>
-            </>
+            </div>
           )}
 
           <div className="absolute top-[-75px] right-7 md:top-[-50px] md-right-8 transition-opacity duration-300 opacity-100">
@@ -297,11 +304,16 @@ const Page = () => {
           <div className="absolute bottom-8 w-full flex justify-between md:px-9 px-13">
             <Link href={"/"} className="inset-0">
               <div>
+                <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
+                  <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
+                    BACK
+                  </span>
+                </div>
                 <div className="group hidden sm:flex flex-row relative justify-center items-center">
-                  <div className="w-12 h-12 flex justify-center border border-solid rotate-45 scale-[0.85] group-hover:scale-[1] duration-300 ease-in-out" />
-                  <div className="absolute left-[15px] bottom-[13px] scale-[1] duration-300 group-hover:scale-[1.15] ease">
+                  <div className="w-12 h-12 hidden sm:flex justify-center border border-solid rotate-45 scale-[0.85] gorup-hover:scale-[0.95] ease duration-300" />
+                  <span className="absolute left-[15px] bottom-[13px] scale-[0.9] hidden sm:block group-hover:scale-[0.95] ease duration-300">
                     ◀
-                  </div>
+                  </span>
                   <span className="text-sm font-semibold hidden sm:block ml-6">
                     BACK
                   </span>

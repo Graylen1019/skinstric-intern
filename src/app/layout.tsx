@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import AOSProvider from "../modules/AOSProvider";
+import AOSProvider from "../modules/AOSProvider"
+
 import "./globals.css";
 
 const roobert = localFont({

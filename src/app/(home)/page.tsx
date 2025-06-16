@@ -11,35 +11,54 @@ const Page = () => {
   const [rightHovered, setRightHovered] = useState(false);
 
   let headerTranslate = "";
-  if (leftHovered) headerTranslate = "translate-x-[360px]";
-  else if (rightHovered) headerTranslate = "-translate-x-[360px]";
+  if (leftHovered) headerTranslate = "md:translate-x-[45px]";
+  else if (rightHovered) headerTranslate = "md:-translate-x-[600px]";
 
   return (
     <>
       <Navbar />
+
+      <div
+        id="lower-left"
+        className="hidden lg:block fixed bottom-[45px] left-[90px] lg:left-[75px] 2xl:left-[120px] [@media(width>=1920px)]:left-[450px] z-50 font-normal text-sm text-[#1A1B1C] space-y-3 uppercase"
+      >
+        <p>
+          Skinstric developed an A.I. that creates a
+          <br />
+          highly-personalized routine tailored to
+          <br />
+          what your skin needs.
+        </p>
+      </div>
 
       <LeftRectangle faded={rightHovered} onHoverChange={setLeftHovered} />
       <RightRectangle faded={leftHovered} onHoverChange={setRightHovered} />
 
       <div className="max-sm:scale-[0.75] max-sm:origin-center max-sm:p-6">
         <div
-          className={`flex flex-col items-center justify-center h-[71dvh] transition-transform duration-800 ease-in-out overflow-hidden ${headerTranslate}`}
+          className={`flex flex-col items-center justify-center h-[71dvh] md:fixed md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 transition-transform duration-800 ease-in-out relative ${headerTranslate}`}
         >
-          <div className="absolute inset-0 flex items-center justify-center lg:hidden">
-            <div className="w-[420px] h-[420px] border border-dotted border-[#A0A4AB] rotate-45 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="z-0 absolute inset-0 flex items-center justify-center lg:hidden">
+            <div
+              id="big-square"
+              className=" w-[420px] h-[420px] border border-dotted border-[#A0A4AB] rotate-45 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            ></div>
           </div>
-          <div className="absolute inset-0 flex items-center justify-center lg:hidden">
-            <div className="w-[350px] h-[350px] border border-dotted border-[#A0A4AB] rotate-45 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="z-0 absolute inset-0 flex items-center justify-center lg:hidden">
+            <div
+              id="small-square"
+              className="w-[350px] h-[350px] border border-dotted border-[#A0A4AB] rotate-45 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            ></div>
           </div>
-          <div id="heading" className="relative z-50 text-center">
+          <div id="heading" className="relative z-10 text-center">
             <h1
               data-aos="fade-in"
-              className="text-[60px] lg:text-[100px] leading-none tracking-tight font-inter font-normal text-[#1A1B1C]"
+              className="text-[55px] lg:text-[100px] leading-none tracking-tighter font-inter font-normal text-[#1A1B1C]"
             >
               Sophisticated
               <br />
               <span
-                className="block w-fulltransition-transform duration-800 ease-in-out"
+                className="block w-full transition-transform duration-800 ease-in-out"
                 style={{
                   transform: leftHovered
                     ? "translateX(18%)"
@@ -69,15 +88,6 @@ const Page = () => {
                 ▶
               </span>
             </Link>
-          </div>
-          <div className="fixed lg:bottom-[70px] lg:left-[50px] md:bottom-[50px] md:left-[50px]  font-normal text-sm text-[#1A1B1C] space-y-3 uppercase hidden lg:block">
-            <p>
-              Skinstric developed an A.I. that creates a
-              <br />
-              highly-personalized routine tailored to
-              <br />
-              what your skin needs.
-            </p>
           </div>
         </div>
       </div>
