@@ -39,7 +39,12 @@ const Page = () => {
 
       try {
         responseData = JSON.parse(responseText);
-      } catch {}
+      } catch (err) {
+        console.log(err)
+        throw new Error(
+          `HTTP error! Status: ${response.status}.`
+        );
+      }
 
       if (!response.ok) {
         const errorMessage =

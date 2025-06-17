@@ -248,20 +248,30 @@ const Page = () => {
                   transition={{ duration: 1, ease: "easeOut" }}
                   className=""
                 >
-                  <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
-                    <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
-                     PROCEED
-                    </span>
-                  </div>
-                  <div className="group hidden sm:flex flex-row relative justify-center items-center">
-                    <div className="w-12 h-12 hidden sm:flex justify-center border border-solid rotate-45 scale-[0.85] gorup-hover:scale-[0.95] ease duration-300" />
-                    <span className="absolute left-[15px] bottom-[13px] scale-[0.9] hidden sm:block group-hover:scale-[0.95] ease duration-300 rotate-180">
-                      ◀
-                    </span>
-                    <span className="text-xl font-semibold hidden sm:block ml-6">
-                      PROCEED
-                    </span>
-                  </div>
+                  <Link href={"/result"} className="inset-0" key="proceed-link">
+                    {/* For larger devices (sm and up) */}
+                    <div className="group hidden sm:flex flex-row relative justify-center items-center">
+                      {/* PROCEED text - on the left with a right margin */}
+                      <span className="text-xl font-semibold hidden sm:block mr-6">
+                        PROCEED
+                      </span>
+                      {/* Bordered div (the square) - now relative and contains the arrow */}
+                      <div className="w-12 h-12 hidden sm:flex relative items-center justify-center border border-solid rotate-45 scale-[0.85] group-hover:scale-[0.95] ease duration-300">
+                        {/* Arrow span - moved inside the square and centered */}
+                        <span className="absolute inset-0 flex items-center justify-center transform -rotate-45 text-black">
+                          <span className="transform rotate-180 scale-[0.9] group-hover:scale-[0.95] ease duration-300">
+                            ◀
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    {/* For small devices (hidden on sm and up) - remains unchanged */}
+                    <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
+                      <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
+                        PROCEED
+                      </span>
+                    </div>
+                  </Link>
                 </motion.div>
               </Link>
             )}
