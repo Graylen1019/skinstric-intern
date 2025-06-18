@@ -62,8 +62,18 @@ const Page = () => {
         responseData.message || "Image uploaded successfully."
       );
 
+      try {
+        localStorage.setItem('apiResponseData', JSON.stringify(responseData));
+        console.log("Data saved to localStorage successfully!");
+      } catch (localStorageError) {
+        console.error("Error saving to localStorage:", localStorageError);
+        // You might want to handle this more gracefully, e.g., alert the user
+      }
+
+
       alert("Image analyzed successfully!");
       router.push("/select");
+
     } catch (err: unknown) {
       if (err instanceof Error) {
       } else {

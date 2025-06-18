@@ -173,7 +173,7 @@ const Page = () => {
             </Link>
 
             {/* Proceed Button */}
-            <Link href={"/result"} className="inset-0" key="proceed-link">
+            <Link href={"/summary"} className="inset-0" key="proceed-link">
               <div className="group hidden sm:flex flex-row relative justify-center items-center">
                 <span className="text-sm font-semibold hidden sm:block mr-5">
                   GET SUMMARY
