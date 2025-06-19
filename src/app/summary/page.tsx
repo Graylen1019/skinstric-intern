@@ -1,8 +1,159 @@
+"use client";
+
 import { Navbar } from "@/modules/navbar";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
-const Page = () => {
+// --- INTERFACES ---
+interface DemographicData {
+  [key: string]: number;
+}
+interface AnalysisResults {
+  race: DemographicData;
+  age: DemographicData;
+  gender: DemographicData;
+}
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  filename?: string;
+  data?: AnalysisResults;
+}
+
+enum Category {
+  Race = "race",
+  Age = "age",
+  Gender = "gender",
+}
+
+function getDominant(data?: DemographicData | null) {
+  if (!data || Object.keys(data).length === 0) return null;
+  return Object.entries(data).reduce(
+    (acc, [name, probability]) =>
+      probability > acc.probability ? { name, probability } : acc,
+    { name: "", probability: -1 }
+  );
+}
+
+const CategoryBox = ({
+  category,
+  selected,
+  dominantName,
+  onClick,
+}: {
+  category: Category;
+  selected: boolean;
+  dominantName?: string;
+  onClick: () => void;
+}) => (
+  <div
+    className={`p-2 ${
+      selected
+        ? "bg-[#1A1B1C] text-white"
+        : "bg-[#F3F3F4] text-black hover:bg-[#E1E1E2]"
+    } flex-1 flex flex-col justify-between space-y-4 border-t cursor-pointer transition-colors duration-200`}
+    onClick={onClick}
+  >
+    <p className="font-semibold capitalize">{dominantName || "N/A"}</p>
+    <h1 className="font-semibold">{category.toUpperCase()}</h1>
+  </div>
+);
+
+const DemographicsPage = () => {
+  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(
+    Category.Race
+  );
+  const [selectedListItemName, setSelectedListItemName] = useState<
+    string | null
+  >(null);
+
+  useEffect(() => {
+    try {
+      const storedData = localStorage.getItem("apiResponseData");
+      if (storedData) setApiResponse(JSON.parse(storedData));
+    } catch {
+      localStorage.removeItem("apiResponseData");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const dominant = getDominant(apiResponse?.data?.[selectedCategory]);
+    setSelectedListItemName(dominant?.name || null);
+  }, [apiResponse, selectedCategory]);
+
+  const dominant = {
+    [Category.Race]: useMemo(
+      () => getDominant(apiResponse?.data?.race),
+      [apiResponse]
+    ),
+    [Category.Age]: useMemo(
+      () => getDominant(apiResponse?.data?.age),
+      [apiResponse]
+    ),
+    [Category.Gender]: useMemo(
+      () => getDominant(apiResponse?.data?.gender),
+      [apiResponse]
+    ),
+  };
+
+  const currentDisplayData = useMemo(() => {
+    const data = apiResponse?.data?.[selectedCategory] || {};
+    const sortedEntries = Object.entries(data)
+      .filter(([, v]) => typeof v === "number")
+      .map(([name, probability]) => ({
+        name,
+        probability: probability as number,
+      }))
+      .sort((a, b) => b.probability - a.probability);
+    return {
+      sortedEntries,
+      title: selectedCategory.toUpperCase(),
+      rawData: data,
+    };
+  }, [selectedCategory, apiResponse]);
+
+  const currentConfidenceForCircle = useMemo(() => {
+    if (
+      selectedListItemName &&
+      currentDisplayData.rawData[selectedListItemName] !== undefined
+    )
+      return currentDisplayData.rawData[selectedListItemName] as number;
+    return getDominant(currentDisplayData.rawData)?.probability || 0;
+  }, [selectedListItemName, currentDisplayData]);
+
+  const displayPercentage = (currentConfidenceForCircle * 100).toFixed(0);
+  const displayNameForCircle =
+    selectedListItemName ||
+    getDominant(currentDisplayData.rawData)?.name ||
+    "N/A";
+  const CIRCUMFERENCE = 2 * Math.PI * 49.15;
+  const strokeDashoffset = CIRCUMFERENCE * (1 - currentConfidenceForCircle);
+
+  const handleCategoryClick = useCallback(
+    (category: Category) => {
+      setSelectedCategory(category);
+      const dominant = getDominant(apiResponse?.data?.[category]);
+      setSelectedListItemName(dominant?.name || null);
+    },
+    [apiResponse]
+  );
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="flex items-center justify-center h-screen">
+          <p>Loading analysis data...</p>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
@@ -20,60 +171,45 @@ const Page = () => {
                 PREDICTED RACE & AGE
               </h1>
             </div>
-
             <div className="grid md:grid-cols-[1.5fr_8.5fr_3.15fr] gap-4 mt-10 mb-40 md:gap-4 pb-0 md:pb-0 md:mb-0">
+              {/* Left Column */}
               <div className="space-y-2 md:flex md:flex-col h-[62%]">
-                <div className="p-2 bg-[#1A1B1C] hover:bg-black text-white flex-1 flex flex-col justify-between space-y-4 border-t">
-                  {/* TODO: ADD dynamic Race */}
-                  <p className="font-semibold">BLACK</p>
-                  <h1 className="font-semibold">RACE</h1>
-                </div>
-                <div className="p-2 bg-[#F3F3F4] hover:bg-  text-black flex-1 flex flex-col justify-between space-y-4 border-t">
-                  {/* TODO: ADD dynamic AGE */}
-                  <p className="font-semibold">50-59</p>
-                  <h1 className="font-semibold">AGE</h1>
-                </div>
-                <div className="p-2 bg-[#F3F3F4] hover:bg- text-black flex-1 flex flex-col justify-between space-y-4 border-t">
-                  {/* TODO: ADD dynamic SEX */}
-                  <p className="font-semibold">MALE</p>
-                  <h1 className="font-semibold">SEX</h1>
-                </div>
+                {Object.values(Category).map((cat) => (
+                  <CategoryBox
+                    key={cat}
+                    category={cat}
+                    selected={selectedCategory === cat}
+                    dominantName={dominant[cat]?.name}
+                    onClick={() => handleCategoryClick(cat)}
+                  />
+                ))}
               </div>
+              {/* Middle Column */}
               <div className="relative bg-[#F3F3F4] p-3 flex flex-col items-center justify-center md:h-[57vh] border-t">
-                    {/* TODO: set this data dynamically depending on which column is selected */}
-                <p className="hidden md:block md:absolute text-5xl mb-2 left-5 top-2">
-                    {/* TODO: dynamic race, age, or sex. */}
-                  White
+                <p className="hidden md:block md:absolute text-5xl mb-2 left-5 top-2 capitalize">
+                  {displayNameForCircle}
                 </p>
                 <div className="relative md:absolute w-full max-w-[384px] mb-4 md:right-5 md:bottom-2">
                   <div className="w-full h-full max-h-[384px] relative transform scale-[1] origin-center">
-                    {/* TODO: Functionality of the progress bar. */}
                     <svg
                       className="CircularProgressbar text-[#1A1B1C]"
                       viewBox="0 0 100 100"
                     >
-                        {/* This is the tail or percentage */}
                       <path
                         className="CircularProgressbar-trail"
                         d="M 50,50 m 0,-49.15 a 49.15,49.15 0 1 1 0,98.3 a 49.15,49.15 0 1 1 0,-98.3"
                         strokeWidth={1.7}
                         fillOpacity={0}
-                        stroke="#C1C2C3" // <-- Add this line
+                        stroke="#C1C2C3"
                         style={{
                           strokeLinecap: "butt",
-                          strokeDasharray: "308.819px, 308.819px",
+                          strokeDasharray: `${CIRCUMFERENCE}px, ${CIRCUMFERENCE}px`,
                           strokeDashoffset: "0px",
                         }}
                       />
-                      {/* This is the background */}
                       <path
                         className="CircularProgressbar-path"
-                        d="
-                            M 50,50
-                            m 0,-49.15
-                            a 49.15,49.15 0 1 1 0,98.3
-                            a 49.15,49.15 0 1 1 0,-98.3
-                            "
+                        d="M 50,50 m 0,-49.15 a 49.15,49.15 0 1 1 0,98.3 a 49.15,49.15 0 1 1 0,-98.3"
                         stroke="#1A1B1C"
                         strokeWidth={1.7}
                         fillOpacity={0}
@@ -81,15 +217,14 @@ const Page = () => {
                           stroke: "rgb(26, 27, 28)",
                           strokeLinecap: "butt",
                           transitionDuration: "0.8s",
-                          strokeDasharray: "308.819px, 308.819px",
-                          strokeDashoffset: "308.819px",
+                          strokeDasharray: `${CIRCUMFERENCE}px, ${CIRCUMFERENCE}px`,
+                          strokeDashoffset: `${strokeDashoffset}px`,
                         }}
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <p className="text-3xl md:text-4xl font-normal">
-                        {/* TODO: set this data dynamically */}
-                        0
+                        {displayPercentage}
                         <span className="absolute text-xl md:text-3xl">%</span>
                       </p>
                     </div>
@@ -99,140 +234,53 @@ const Page = () => {
                   If A.I. estimate is wrong, select the correct one.
                 </p>
               </div>
+              {/* Right Column */}
               <div className="bg-[#F3F3F4] pt-4 pb-4 border-t">
                 <div className="space-y-0">
                   <div className="flex justify-between px-4">
-                    <h1 className="text-base leading-[24px] tracking-tight font-medium mb-2">
-                    {/* TODO: set this data dynamically depending on which column is selected */}
-                      RACE
+                    <h1 className="text-base leading-[24px] tracking-tight font-medium mb-2 capitalize">
+                      {currentDisplayData.title}
                     </h1>
                     <h1 className="text-base leading-[24px] tracking-tight font-medium mb-2">
                       A.I. CONFIDENCE
                     </h1>
                   </div>
-                  <div className="flex items-center justify-between h-[48px] hover:bg-[#E1E1E2] px-4 cursor-pointer">
-                    <div className="flex items-center gap-1">
-                      <Image
-                        src={"/radio-button.png"}
-                        width={12}
-                        height={12}
-                        alt="Radio button"
-                        className="w-[12px] h-[12px] mr-2"
-                      />
+                  {currentDisplayData.sortedEntries.map((entry) => (
+                    <div
+                      key={entry.name}
+                      className={`flex items-center justify-between h-[48px] px-4 cursor-pointer transition-colors duration-200
+                          ${
+                            selectedListItemName === entry.name
+                              ? "bg-black text-white"
+                              : "hover:bg-[#E1E1E2] text-black"
+                          }`}
+                      onClick={() => setSelectedListItemName(entry.name)}
+                    >
+                      <div className="flex items-center gap-1">
+                        <Image
+                          src={
+                            selectedListItemName === entry.name
+                              ? "/radio-button(1).png" // White-filled version
+                              : "/radio-button.png"
+                          }
+                          width={12}
+                          height={12}
+                          alt="Radio button"
+                          className="w-[12px] h-[12px] mr-2"
+                        />
+                        <span className="font-normal text-base leading-6 tracking-tight capitalize">
+                          {entry.name}
+                        </span>
+                      </div>
                       <span className="font-normal text-base leading-6 tracking-tight">
-                        Black
+                        {(entry.probability * 100).toFixed(0)}%
                       </span>
                     </div>
-                    <span className="font-normal text-base leading-6 tracking-tight">
-                      62%
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between h-[48px] hover:bg-[#E1E1E2] px-4 cursor-pointer">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={"/radio-button.png"}
-                      width={12}
-                      height={12}
-                      alt="Radio button"
-                      className="w-[12px] h-[12px] mr-2"
-                    />
-                    <span className="font-normal text-base leading-6 tracking-tight">
-                      Black
-                    </span>
-                  </div>
-                  <span className="font-normal text-base leading-6 tracking-tight">
-                    62%
-                  </span>
-                </div>
-                <div className="flex items-center justify-between h-[48px] hover:bg-[#E1E1E2] px-4 cursor-pointer">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={"/radio-button.png"}
-                      width={12}
-                      height={12}
-                      alt="Radio button"
-                      className="w-[12px] h-[12px] mr-2"
-                    />
-                    <span className="font-normal text-base leading-6 tracking-tight">
-                      Black
-                    </span>
-                  </div>
-                  <span className="font-normal text-base leading-6 tracking-tight">
-                    62%
-                  </span>
-                </div>
-                <div className="flex items-center justify-between h-[48px] hover:bg-[#E1E1E2] px-4 cursor-pointer">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={"/radio-button.png"}
-                      width={12}
-                      height={12}
-                      alt="Radio button"
-                      className="w-[12px] h-[12px] mr-2"
-                    />
-                    <span className="font-normal text-base leading-6 tracking-tight">
-                      Black
-                    </span>
-                  </div>
-                  <span className="font-normal text-base leading-6 tracking-tight">
-                    62%
-                  </span>
-                </div>
-                <div className="flex items-center justify-between h-[48px] hover:bg-[#E1E1E2] px-4 cursor-pointer">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={"/radio-button.png"}
-                      width={12}
-                      height={12}
-                      alt="Radio button"
-                      className="w-[12px] h-[12px] mr-2"
-                    />
-                    <span className="font-normal text-base leading-6 tracking-tight">
-                      Black
-                    </span>
-                  </div>
-                  <span className="font-normal text-base leading-6 tracking-tight">
-                    62%
-                  </span>
-                </div>
-                <div className="flex items-center justify-between h-[48px] hover:bg-[#E1E1E2] px-4 cursor-pointer">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={"/radio-button.png"}
-                      width={12}
-                      height={12}
-                      alt="Radio button"
-                      className="w-[12px] h-[12px] mr-2"
-                    />
-                    <span className="font-normal text-base leading-6 tracking-tight">
-                      Black
-                    </span>
-                  </div>
-                  <span className="font-normal text-base leading-6 tracking-tight">
-                    62%
-                  </span>
-                </div>
-                <div className="flex items-center justify-between h-[48px] hover:bg-[#E1E1E2] px-4 cursor-pointer">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={"/radio-button.png"}
-                      width={12}
-                      height={12}
-                      alt="Radio button"
-                      className="w-[12px] h-[12px] mr-2"
-                    />
-                    <span className="font-normal text-base leading-6 tracking-tight">
-                      Black
-                    </span>
-                  </div>
-                  <span className="font-normal text-base leading-6 tracking-tight">
-                    62%
-                  </span>
+                  ))}
                 </div>
               </div>
             </div>
-
+            {/* Bottom Navigation */}
             <div className="bg-white pt-4 md:pt-[37px] pb-6 sticky bottom-40 md:static md:bottom-0 mb-8 md:mb-16">
               <div className="flex justify-between max-w-full mx-auto px-4 md:px-0">
                 <Link href={"/"}>
@@ -253,7 +301,6 @@ const Page = () => {
                     </div>
                   </div>
                 </Link>
-
                 <Link href={"/summary"}>
                   <div className="group hidden sm:flex flex-row relative justify-center items-center">
                     <span className="text-sm font-semibold hidden sm:block mr-5">
@@ -279,4 +326,5 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default DemographicsPage;
+// ...existing code...

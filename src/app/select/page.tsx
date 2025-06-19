@@ -13,90 +13,77 @@ const Page = () => {
   return (
     <>
       <Navbar />
-      <>
-        <div className="absolute top-10 left-8 text-left">
-          <h1 className="text-base font-semibold leading-[-24px ]tracking-tight">
+      <div className="w-full flex flex-col min-h-[calc(100vh-56px)] overflow-x-hidden">
+        <div className="absolute top-10 left-8 text-left mt-5">
+          <h1 className="text-base font-semibold leading-[24px] tracking-tight">
             A.I. ANALYSIS
           </h1>
-          <p className="text-sm mt-1 text-muted-foreground uppercase leading-[-24px] space-y-6">
+          <p className="text-sm mt-1 text-muted-foreground uppercase leading-[24px]">
             A.I. has estimated the following
             <br />
             Fix estimated information if needed
           </p>
         </div>
-        <div className="h-[80vh] flex flex-col items-center justify-center bg-white">
+
+        <div className="flex-grow flex flex-col items-center justify-center bg-white">
           <div className="relative">
+            {/* Image Overlays */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div
-                aria-label="small-square"
-                className="absolute inset-0 flex items-center justify-center z-0"
+                className={`absolute transition-all duration-400 w-[400px] h-[400px] ${
+                  showSmall ? "opacity-100 scale-[1.5]" : "opacity-0 scale-[1]"
+                }`}
               >
-                <div
-                  className={`absolute transition-all duration-400 w-[400px] h-[400px] ${
-                    showSmall
-                      ? "opacity-100 scale-[1.5]"
-                      : "opacity-0 scale-[1]"
-                  }`}
-                >
-                  <Image
-                    id="small"
-                    loading="lazy"
-                    width={602}
-                    height={602}
-                    alt="small-square"
-                    src={"/Rectangle%202779.png"}
-                    className="filter brightness-0 absolute h-full w-full inset-0 object-contain"
-                  />
-                </div>
-              </div>
-              <div
-                aria-label="medium-square"
-                className="absolute inset-0 flex items-center justify-center z-0"
-              >
-                <div
-                  className={`absolute transition-all duration-400 w-[550px] h-[550px] ${
-                    showMedium
-                      ? "opacity-100 scale-[1.25]"
-                      : "opacity-0 scale-[1]"
-                  }`}
-                >
-                  <Image
-                    id="medium"
-                    alt="medium-square"
-                    loading="lazy"
-                    width={682}
-                    height={682}
-                    src={"/Rectangle%202780.png"}
-                    className="filter brightness-0 absolute h-full w-full inset-0 object-contain"
-                  />
-                </div>
-              </div>
-              <div
-                aria-label="big-square"
-                className="absolute inset-0 flex items-center justify-center z-0"
-              >
-                <div
-                  className={`absolute transition-all duration-400 w-[400px] h-[400px] ${
-                    showBig ? "opacity-100 scale-[2]" : "opacity-0 scale-[1]"
-                  }`}
-                >
-                  <Image
-                    src={"/Rectangle%202778.png"}
-                    alt="large-square"
-                    width={762}
-                    height={762}
-                    loading="lazy"
-                    id="large"
-                    className=" absolute h-full w-full inset-0 object-contain"
-                  />
-                </div>
+                <Image
+                  id="small"
+                  loading="lazy"
+                  width={602}
+                  height={602}
+                  alt="small-square"
+                  src={"/Rectangle%202779.png"}
+                  className="filter brightness-0 absolute h-full w-full inset-0 object-contain"
+                />
               </div>
             </div>
-            <div className="relative z-10 grid grid-cols-3 grid-rows-3 gap-0">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div
-                aria-label="top"
-                className="flex items-center justify-center col-start-2"
+                className={`absolute transition-all duration-400 w-[550px] h-[550px] ${
+                  showMedium
+                    ? "opacity-100 scale-[1.25]"
+                    : "opacity-0 scale-[1]"
+                }`}
               >
+                <Image
+                  id="medium"
+                  alt="medium-square"
+                  loading="lazy"
+                  width={682}
+                  height={682}
+                  src={"/Rectangle%202780.png"}
+                  className="filter brightness-0 absolute h-full w-full inset-0 object-contain"
+                />
+              </div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div
+                className={`absolute transition-all duration-400 w-[400px] h-[400px] ${
+                  showBig ? "opacity-100 scale-[2]" : "opacity-0 scale-[1]"
+                }`}
+              >
+                <Image
+                  src={"/Rectangle%202778.png"}
+                  alt="large-square"
+                  width={762}
+                  height={762}
+                  loading="lazy"
+                  id="large"
+                  className=" absolute h-full w-full inset-0 object-contain"
+                />
+              </div>
+            </div>
+            {/* Interactive Buttons Grid */}
+            <div className="relative z-10 grid grid-cols-3 grid-rows-3 gap-0">
+              <div className="flex items-center justify-center col-start-2">
                 <Link href={"/summary"}>
                   <button
                     onMouseEnter={() => setShowSmall(true)}
@@ -107,10 +94,7 @@ const Page = () => {
                   </button>
                 </Link>
               </div>
-              <div
-                aria-label="left"
-                className="flex items-center justify-center col-start-1 row-start-2"
-              >
+              <div className="flex items-center justify-center col-start-1 row-start-2">
                 <button
                   onMouseEnter={() => setShowMedium(true)}
                   onMouseLeave={() => setShowMedium(false)}
@@ -121,10 +105,7 @@ const Page = () => {
                   </span>
                 </button>
               </div>
-              <div
-                aria-label="right"
-                className="flex items-center justify-center col-start-3 row-start-2"
-              >
+              <div className="flex items-center justify-center col-start-3 row-start-2">
                 <button
                   onMouseEnter={() => setShowMedium(true)}
                   onMouseLeave={() => setShowMedium(false)}
@@ -135,10 +116,7 @@ const Page = () => {
                   </span>
                 </button>
               </div>
-              <div
-                aria-label="bottom"
-                className="flex items-center justify-center col-start-2 row-start-3"
-              >
+              <div className="flex items-center justify-center col-start-2 row-start-3">
                 <button
                   onMouseEnter={() => setShowBig(true)}
                   onMouseLeave={() => setShowBig(false)}
@@ -150,13 +128,14 @@ const Page = () => {
             </div>
           </div>
         </div>
-        <div className="pt-9 bg-white">
-          <div className="flex justify-between items-center max-w-full mx-auto px-13 md:px-9">
-            {/* Back Button */}
-            <Link href={"/"} className="inset-0">
+
+        {/* Bottom Navigation */}
+        <div className="pt-4 md:pt-12 pb-8 bg-white sticky md:static bottom-40 mb-0 md:mb-0">
+          <div className="flex justify-between items-center max-w-full mx-auto px-13 md:px-9"> {/* REVERTED HERE */}
+            <Link href={"/"}>
               <div>
                 <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
-                  <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
+                  <span className="rotate-[-45deg] text-xs font-semibold">
                     BACK
                   </span>
                 </div>
@@ -172,8 +151,7 @@ const Page = () => {
               </div>
             </Link>
 
-            {/* Proceed Button */}
-            <Link href={"/summary"} className="inset-0" key="proceed-link">
+            <Link href={"/summary"}>
               <div className="group hidden sm:flex flex-row relative justify-center items-center">
                 <span className="text-sm font-semibold hidden sm:block mr-5">
                   GET SUMMARY
@@ -184,14 +162,14 @@ const Page = () => {
                 </span>
               </div>
               <div className="w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
-                <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
+                <span className="rotate-[-45deg] text-xs font-semibold">
                   SUM
                 </span>
               </div>
             </Link>
           </div>
         </div>
-      </>
+      </div>
     </>
   );
 };
