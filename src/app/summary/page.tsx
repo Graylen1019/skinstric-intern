@@ -327,4 +327,3 @@ const DemographicsPage = () => {
 };
 
 export default DemographicsPage;
-// ...existing code...

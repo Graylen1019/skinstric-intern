@@ -15,6 +15,7 @@ interface ApiResponse {
 const Page = () => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
   const [isProcessingImage, setIsProcessingImage] = useState<boolean>(false);
+  const [showCameraPermission, setShowCameraPermission] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -40,10 +41,8 @@ const Page = () => {
       try {
         responseData = JSON.parse(responseText);
       } catch (err) {
-        console.log(err)
-        throw new Error(
-          `HTTP error! Status: ${response.status}.`
-        );
+        console.log(err);
+        throw new Error(`HTTP error! Status: ${response.status}.`);
       }
 
       if (!response.ok) {
@@ -63,17 +62,15 @@ const Page = () => {
       );
 
       try {
-        localStorage.setItem('apiResponseData', JSON.stringify(responseData));
+        localStorage.setItem("apiResponseData", JSON.stringify(responseData));
         console.log("Data saved to localStorage successfully!");
       } catch (localStorageError) {
         console.error("Error saving to localStorage:", localStorageError);
         // You might want to handle this more gracefully, e.g., alert the user
       }
 
-
       alert("Image analyzed successfully!");
       router.push("/select");
-
     } catch (err: unknown) {
       if (err instanceof Error) {
       } else {
@@ -103,6 +100,10 @@ const Page = () => {
 
   const handleGalleryIconClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleCameraIconClick = () => {
+    setShowCameraPermission(true);
   };
 
   return (
@@ -152,6 +153,7 @@ const Page = () => {
                 height={136}
                 alt="camera-icon"
                 className="absolute w-[100px] h-[100px] md:w-[136px] md:h-[136px] hover:scale-110 duration-500 ease-in-out cursor-pointer"
+                onClick={handleCameraIconClick}
               />
               <div className="absolute bottom-[1%] right-[90px] md:top-[30.9%] md:right-[-12px] translate-y-[-20px]">
                 <p className="text-xs md:text-sm font-normal mt-1 leading-[24px]">
@@ -168,6 +170,30 @@ const Page = () => {
                 />
               </div>
             </div>
+
+            {showCameraPermission && (
+              <div className="absolute md:top-[43%] md:left-[360px] w-[352px] z-50">
+                <div className="bg-[#1A1B1C] pt-4 pb-2">
+                  <h2 className="text-[#FCFCFC] text-base font-semibold mb-12 leading-[24px] pl-4">
+                    ALLOW A.I. TO ACCESS YOUR CAMERA
+                  </h2>
+                  <div className="flex mt-4 border-t border-[#FCFCFC] pt-2">
+                    <button
+                      onClick={() => setShowCameraPermission(false)}
+                      className="px-7 md:translate-x-45 text-[#FCFCFCA1] font-normal text-sm leading-4 tracking-tight cursor-pointer hover:text-gray-500"
+                    >
+                      DENY
+                    </button>
+                    <button
+                      onClick={() => router.push("/camera")}
+                      className="px-5 md:translate-x-45 text-[#FCFCFC] font-normal text-sm leading-4 tracking-tight cursor-pointer hover:text-gray-300"
+                    >
+                      ALLOW
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div
@@ -208,7 +234,8 @@ const Page = () => {
                 width={136}
                 height={136}
                 alt="gallery-icon"
-                className="absolute w-[100px] h-[100px] md:w-[136px] md:h-[136px] hover:scale-110 duration-500 ease-in-out cursor-pointer"
+                className={`absolute w-[100px] h-[100px] md:w-[136px] md:h-[136px] hover:scale-110 duration-500 ease-in-out cursor-pointer
+                  ${showCameraPermission && "opacity-50"}`}
                 onClick={handleGalleryIconClick}
               />
 
@@ -220,7 +247,11 @@ const Page = () => {
                 className="hidden"
               />
 
-              <div className="absolute top-[75%] md:top-[70%] md:left-[17px] translate-y-[-10%]">
+              <div
+                className={`absolute top-[75%] md:top-[70%] md:left-[17px] translate-y-[-10%] ${
+                  showCameraPermission && "opacity-50"
+                }`}
+              >
                 <p className="text-xs md:text-sm font-normal mt-2 leading-[24px] text-right">
                   ALLOW A.I.
                   <br />
