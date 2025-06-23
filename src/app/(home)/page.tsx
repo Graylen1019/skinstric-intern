@@ -34,7 +34,7 @@ const Page = () => {
       <LeftRectangle faded={rightHovered} onHoverChange={setLeftHovered} />
       <RightRectangle faded={leftHovered} onHoverChange={setRightHovered} />
 
-      <div className=" w-full overflow-hidden max-sm:scale-[0.75] max-sm:origin-center max-sm:p-6">
+      <div className="w-full max-sm:scale-[0.75] max-sm:origin-center max-sm:p-6">
         <div
           className={`flex flex-col items-center justify-center h-[71dvh] md:fixed md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 transition-transform duration-800 ease-in-out relative ${headerTranslate}`}
         >
