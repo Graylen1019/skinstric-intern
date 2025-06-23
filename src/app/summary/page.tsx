@@ -278,7 +278,7 @@ const DemographicsPage = () => {
             </div>
             <div className="bg-white pt-4 md:pt-[37px] pb-6 sticky bottom-40 md:static md:bottom-0 mb-8 md:mb-16">
               <div className="flex justify-between max-w-full mx-auto px-4 md:px-0">
-                <Link href={"/"}>
+                <Link href={"/result"}>
                   <div>
                     <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
                       <span className="rotate-[-45deg] text-xs font-semibold sm:hidden">
@@ -296,7 +296,7 @@ const DemographicsPage = () => {
                     </div>
                   </div>
                 </Link>
-                <Link href={"/summary"}>
+                <Link href={"/"}>
                   <div className="group hidden sm:flex flex-row relative justify-center items-center">
                     <span className="text-sm font-semibold hidden sm:block mr-5">
                       HOME
