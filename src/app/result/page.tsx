@@ -46,9 +46,7 @@ const Page = () => {
       }
 
       if (!response.ok) {
-        const errorMessage =
-          responseData.message ||
-          response.statusText 
+        const errorMessage = responseData.message || response.statusText;
         throw new Error(
           `HTTP error! Status: ${response.status}. ${errorMessage}`
         );

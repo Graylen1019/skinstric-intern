@@ -9,7 +9,6 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Wait 1 second, then route to the camera capture page
     const timeout = setTimeout(() => {
       router.push("/camera/capture");
     }, 1000);

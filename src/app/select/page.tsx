@@ -128,7 +128,9 @@ const Page = () => {
         </div>
 
         <div className="pt-4 md:pt-12 pb-8 bg-white sticky md:static bottom-40 mb-0 md:mb-0">
-          <div className="flex justify-between items-center max-w-full mx-auto px-13 md:px-9"> {/* REVERTED HERE */}
+          <div className="flex justify-between items-center max-w-full mx-auto px-13 md:px-9">
+            {" "}
+            {/* REVERTED HERE */}
             <Link href={"/"}>
               <div>
                 <div className="relative w-12 h-12 flex items-center justify-center border border-solid rotate-45 scale-[1] sm:hidden">
@@ -147,7 +149,6 @@ const Page = () => {
                 </div>
               </div>
             </Link>
-
             <Link href={"/summary"}>
               <div className="group hidden sm:flex flex-row relative justify-center items-center">
                 <span className="text-sm font-semibold hidden sm:block mr-5">

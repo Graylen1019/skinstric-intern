@@ -69,6 +69,7 @@ const Page = () => {
         stream.getTracks().forEach((track) => track.stop());
       }
       if (videoRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         videoRef.current.srcObject = null;
       }
     };
