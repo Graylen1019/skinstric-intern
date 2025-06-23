@@ -48,8 +48,7 @@ const Page = () => {
       if (!response.ok) {
         const errorMessage =
           responseData.message ||
-          response.statusText ||
-          "Unknown error from API";
+          response.statusText 
         throw new Error(
           `HTTP error! Status: ${response.status}. ${errorMessage}`
         );
@@ -66,7 +65,6 @@ const Page = () => {
         console.log("Data saved to localStorage successfully!");
       } catch (localStorageError) {
         console.error("Error saving to localStorage:", localStorageError);
-        // You might want to handle this more gracefully, e.g., alert the user
       }
 
       alert("Image analyzed successfully!");

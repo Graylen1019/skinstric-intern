@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState, useMemo, useCallback } from "react";
 
-// --- INTERFACES ---
 interface DemographicData {
   [key: string]: number;
 }
@@ -172,7 +171,6 @@ const DemographicsPage = () => {
               </h1>
             </div>
             <div className="grid md:grid-cols-[1.5fr_8.5fr_3.15fr] gap-4 mt-10 mb-40 md:gap-4 pb-0 md:pb-0 md:mb-0">
-              {/* Left Column */}
               <div className="space-y-2 md:flex md:flex-col h-[62%]">
                 {Object.values(Category).map((cat) => (
                   <CategoryBox
@@ -184,7 +182,6 @@ const DemographicsPage = () => {
                   />
                 ))}
               </div>
-              {/* Middle Column */}
               <div className="relative bg-[#F3F3F4] p-3 flex flex-col items-center justify-center md:h-[57vh] border-t">
                 <p className="hidden md:block md:absolute text-5xl mb-2 left-5 top-2 capitalize">
                   {displayNameForCircle}
@@ -234,7 +231,6 @@ const DemographicsPage = () => {
                   If A.I. estimate is wrong, select the correct one.
                 </p>
               </div>
-              {/* Right Column */}
               <div className="bg-[#F3F3F4] pt-4 pb-4 border-t">
                 <div className="space-y-0">
                   <div className="flex justify-between px-4">
@@ -280,7 +276,6 @@ const DemographicsPage = () => {
                 </div>
               </div>
             </div>
-            {/* Bottom Navigation */}
             <div className="bg-white pt-4 md:pt-[37px] pb-6 sticky bottom-40 md:static md:bottom-0 mb-8 md:mb-16">
               <div className="flex justify-between max-w-full mx-auto px-4 md:px-0">
                 <Link href={"/"}>

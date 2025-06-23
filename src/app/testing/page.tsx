@@ -89,8 +89,7 @@ const Page = () => {
         if (!response.ok) {
           const errorMessage =
             responseData.message ||
-            response.statusText ||
-            "Unknown error from API";
+            response.statusText 
           throw new Error(
             `HTTP error! Status: ${response.status}. ${errorMessage}`
           );
@@ -122,7 +121,7 @@ const Page = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-[90vh] flex flex-col items-center justify-center bg-white text-center">
+      <div className="min-h-[90vh] w-full overflow-hidden flex flex-col items-center justify-center bg-white text-center">
         <div className="absolute top-16 left-9 text-left">
           <p className="font-normal text-xs">TO START ANALYSIS</p>
         </div>

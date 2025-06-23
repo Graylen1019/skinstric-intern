@@ -11,9 +11,9 @@ interface ApiResponse {
 
 const Page = () => {
   const [error, setError] = useState<string | boolean>(false);
-  const [cameraReady, setCameraReady] = useState(false); // True when live camera is showing
-  const [capturedImageSrc, setCapturedImageSrc] = useState<string | null>(null); // Stores Base64 for preview
-  const [isProcessingImage, setIsProcessingImage] = useState(false); // For API upload status
+  const [cameraReady, setCameraReady] = useState(false);
+  const [capturedImageSrc, setCapturedImageSrc] = useState<string | null>(null);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -98,13 +98,10 @@ const Page = () => {
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
 
-    // *** THE MISSING CRUCIAL STEP ***
-    // Draw the current frame from the video onto the canvas.
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-    const dataUrl = canvas.toDataURL("image/png"); // Or 'image/jpeg' if preferred
+    const dataUrl = canvas.toDataURL("image/png");
 
-    // Extract just the Base64 part (remove "data:image/png;base64,")
     const base64Image = dataUrl.split(",")[1];
 
     if (!base64Image) {
@@ -112,13 +109,13 @@ const Page = () => {
       return;
     }
 
-    setCapturedImageSrc(dataUrl); // Store full data URL for display
-    setCameraReady(false); // Hide the live camera feed
+    setCapturedImageSrc(dataUrl);
+    setCameraReady(false);
   };
 
   const handleRetake = () => {
-    setCapturedImageSrc(null); // Clear captured image
-    setCameraReady(true); // Re-enable live camera
+    setCapturedImageSrc(null);
+    setCameraReady(true);
     setError(false);
   };
 
@@ -127,7 +124,6 @@ const Page = () => {
       console.warn("No photo to use or already processing.");
       return;
     }
-    // Extract base64 part for API upload, if capturedImageSrc still contains prefix
     const base64ForUpload = capturedImageSrc.split(",")[1];
     if (!base64ForUpload) {
       setError("Error preparing image for upload.");
@@ -255,7 +251,7 @@ const Page = () => {
                       isProcessingImage ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                     src={"/Group40037.png"}
-                    onClick={handleCapturePhoto} // Only capture here
+                    onClick={handleCapturePhoto}
                     priority
                   />
                 </div>
@@ -309,7 +305,6 @@ const Page = () => {
             </div>
           )}
 
-          {/* Back button, always present */}
           <div className="absolute md:bottom-8 bottom-60 left-8 z-20">
             <a href="/result">
               <div>
@@ -331,7 +326,6 @@ const Page = () => {
             </a>
           </div>
 
-          {/* Hidden Canvas for Image Capture */}
           <canvas ref={canvasRef} width={1280} height={720}></canvas>
         </div>
       </div>

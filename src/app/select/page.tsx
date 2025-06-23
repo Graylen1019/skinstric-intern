@@ -27,7 +27,6 @@ const Page = () => {
 
         <div className="flex-grow flex flex-col items-center justify-center bg-white">
           <div className="relative">
-            {/* Image Overlays */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div
                 className={`absolute transition-all duration-400 w-[400px] h-[400px] ${
@@ -81,7 +80,6 @@ const Page = () => {
                 />
               </div>
             </div>
-            {/* Interactive Buttons Grid */}
             <div className="relative z-10 grid grid-cols-3 grid-rows-3 gap-0">
               <div className="flex items-center justify-center col-start-2">
                 <Link href={"/summary"}>
@@ -129,7 +127,6 @@ const Page = () => {
           </div>
         </div>
 
-        {/* Bottom Navigation */}
         <div className="pt-4 md:pt-12 pb-8 bg-white sticky md:static bottom-40 mb-0 md:mb-0">
           <div className="flex justify-between items-center max-w-full mx-auto px-13 md:px-9"> {/* REVERTED HERE */}
             <Link href={"/"}>
